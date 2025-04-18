@@ -3,40 +3,7 @@ import { useOutletContext } from 'react-router-dom';
 
 const Todo = () => {
   const { user } = useOutletContext();
-  const [todos, setTodos] = useState([
-  {
-    "_id": "661f1a5c12e0fa0f73a00111",
-    "userId": "661f0c3a56f7e8aef1a00001",
-    "text": "Buy groceries",
-    "completed": false,
-    "createdAt": "2025-04-16T10:00:00.000Z",
-    "updatedAt": "2025-04-16T10:00:00.000Z"
-  },
-  {
-    "_id": "661f1a6d12e0fa0f73a00112",
-    "userId": "661f0c3a56f7e8aef1a00001",
-    "text": "Finish coding assignment",
-    "completed": true,
-    "createdAt": "2025-04-16T12:00:00.000Z",
-    "updatedAt": "2025-04-16T12:30:00.000Z"
-  },
-  {
-    "_id": "661f1a7e12e0fa0f73a00113",
-    "userId": "661f0c3a56f7e8aef1a00001",
-    "text": "Schedule meeting with team",
-    "completed": false,
-    "createdAt": "2025-04-17T09:00:00.000Z",
-    "updatedAt": "2025-04-17T09:00:00.000Z"
-  },
-  {
-    "_id": "661f1a8f12e0fa0f73a00114",
-    "userId": "661f0c3a56f7e8aef1a00002",
-    "text": "Read a book",
-    "completed": false,
-    "createdAt": "2025-04-17T15:00:00.000Z",
-    "updatedAt": "2025-04-17T15:00:00.000Z"
-  }
-]);
+  const [todos, setTodos] = useState([]);
   const [newTodo, setNewTodo] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -52,7 +19,7 @@ const Todo = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('tmbill-acccess-token');
-      const response = await fetch('http://localhost:5000/api/todos', {
+      const response = await fetch('http://localhost:5000/api/todo/', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -78,7 +45,7 @@ const Todo = () => {
     
     try {
       const token = localStorage.getItem('tmbill-acccess-token');
-      const response = await fetch('http://localhost:5000/api/todos', {
+      const response = await fetch('http://localhost:5000/api/todo', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,13 +68,13 @@ const Todo = () => {
   };
 
   const toggleComplete = async (id) => {
-    const todoToToggle = todos.find(todo => todo.id === id);
+    const todoToToggle = todos.find(todo => todo._id === id);
     if (!todoToToggle) return;
     
     try {
       const token = localStorage.getItem('tmbill-acccess-token');
-      const response = await fetch(`http://localhost:5000/api/todos/${id}`, {
-        method: 'PATCH',
+      const response = await fetch(`http://localhost:5000/api/todo/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -120,7 +87,7 @@ const Todo = () => {
       }
       
       setTodos(todos.map(todo => 
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        todo._id === id ? { ...todo, completed: !todo.completed } : todo
       ));
     } catch (err) {
       setError(err.message);
@@ -129,7 +96,7 @@ const Todo = () => {
   };
 
   const startEditing = (todo) => {
-    setEditingId(todo.id);
+    setEditingId(todo._id);
     setEditText(todo.text);
   };
 
@@ -143,8 +110,8 @@ const Todo = () => {
     
     try {
       const token = localStorage.getItem('tmbill-acccess-token');
-      const response = await fetch(`http://localhost:5000/api/todos/${id}`, {
-        method: 'PATCH',
+      const response = await fetch(`http://localhost:5000/api/todo/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -157,20 +124,20 @@ const Todo = () => {
       }
       
       setTodos(todos.map(todo => 
-        todo.id === id ? { ...todo, text: editText } : todo
+        todo._id === id ? { ...todo, text: editText } : todo
       ));
       setEditingId(null);
       setEditText('');
     } catch (err) {
-      setError(err.message);
       console.error('Error updating todo:', err);
+      setError(err.message);
     }
   };
 
   const deleteTodo = async (id) => {
     try {
       const token = localStorage.getItem('tmbill-acccess-token');
-      const response = await fetch(`http://localhost:5000/api/todos/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/todo/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -181,7 +148,7 @@ const Todo = () => {
         throw new Error('Failed to delete todo');
       }
       
-      setTodos(todos.filter(todo => todo.id !== id));
+      setTodos(todos.filter(todo => todo._id !== id));
     } catch (err) {
       setError(err.message);
       console.error('Error deleting todo:', err);
@@ -266,21 +233,21 @@ const Todo = () => {
         <ul className="overflow-hidden divide-y divide-gray-200 rounded-md shadow-sm border border-gray-200">
           {filteredTodos.map(todo => (
             <li 
-              key={todo.id} 
+              key={todo._id} 
               className={`transition-colors ${todo.completed ? 'bg-green-50' : 'bg-white'}`}
             >
-              {editingId === todo.id ? (
+              {editingId === todo._id ? (
                 <div className="flex items-center p-4">
                   <input
                     type="text"
                     value={editText}
                     onChange={(e) => setEditText(e.target.value)}
-                    className="flex-grow px-3 py-1 mr-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-grow px-3 py-1 mr-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     autoFocus
                   />
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => updateTodo(todo.id)}
+                      onClick={() => updateTodo(todo._id)}
                       className="px-3 py-1 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       Save
@@ -299,7 +266,7 @@ const Todo = () => {
                     <input
                       type="checkbox"
                       checked={todo.completed}
-                      onChange={() => toggleComplete(todo.id)}
+                      onChange={() => toggleComplete(todo._id)}
                       className="w-5 h-5 mr-3 text-blue-600 border-gray-300 rounded cursor-pointer focus:ring-blue-500"
                     />
                     <span className={`text-gray-800 ${todo.completed ? 'line-through text-gray-500' : ''}`}>
@@ -315,7 +282,7 @@ const Todo = () => {
                       Edit
                     </button>
                     <button
-                      onClick={() => deleteTodo(todo.id)}
+                      onClick={() => deleteTodo(todo._id)}
                       className="px-2 py-1 text-sm text-red-600 bg-red-100 rounded hover:bg-red-200 focus:outline-none"
                       aria-label="Delete todo"
                     >

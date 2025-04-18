@@ -61,7 +61,7 @@ const Layout = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-indigo-100">
             {/* Navigation */}
             <nav className="px-4 py-4 bg-white shadow-md sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between max-w-6xl mx-auto">
@@ -79,7 +79,7 @@ const Layout = () => {
             </nav>
 
             {/* Main Content */}
-            <div className="px-4 py-8 md:py-16">
+            <div className="flex-grow px-4 py-8 md:py-16">
                 <div className="max-w-4xl mx-auto">
                     <Outlet context={{ user }} /> {/* Children will render here */}
                 </div>
