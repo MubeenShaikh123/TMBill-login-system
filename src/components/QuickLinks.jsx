@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const QuickLinks = () => {
     return (
@@ -11,7 +12,9 @@ const QuickLinks = () => {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
                     </div>
-                    <h3 className="text-lg font-medium text-gray-900">New Project</h3>
+                    <Link to="/todo" className="font-medium text-blue-600 hover:text-blue-500">
+                        New Project
+                    </Link>
                     <p className="mt-1 text-sm text-gray-500">Create a new project and get started right away.</p>
                 </div>
                 <div className="p-5 text-center bg-white rounded-lg shadow-md">
