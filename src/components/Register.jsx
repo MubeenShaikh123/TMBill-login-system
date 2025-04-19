@@ -54,6 +54,11 @@ const Register = () => {
             return
         }
 
+        if (phoneNumber.length!=10) {
+            alert('Enter a valid phone number with 10 digits, without spaces or special characters.');
+            return
+        }
+
         if (password.length<8) {
             alert('Password should be at least 8 characters long...!')
             return
