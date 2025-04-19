@@ -19,7 +19,7 @@ const Todo = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('tmbill-acccess-token');
-      const response = await fetch('http://localhost:5000/api/todo/', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todo/`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -45,7 +45,7 @@ const Todo = () => {
     
     try {
       const token = localStorage.getItem('tmbill-acccess-token');
-      const response = await fetch('http://localhost:5000/api/todo', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todo`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ const Todo = () => {
     
     try {
       const token = localStorage.getItem('tmbill-acccess-token');
-      const response = await fetch(`http://localhost:5000/api/todo/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todo/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ const Todo = () => {
     
     try {
       const token = localStorage.getItem('tmbill-acccess-token');
-      const response = await fetch(`http://localhost:5000/api/todo/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todo/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ const Todo = () => {
   const deleteTodo = async (id) => {
     try {
       const token = localStorage.getItem('tmbill-acccess-token');
-      const response = await fetch(`http://localhost:5000/api/todo/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/todo/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
