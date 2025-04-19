@@ -8,7 +8,6 @@ const Layout = () => {
 
     useEffect(() => {
         const verifySession = async () => {
-            console.log('verifying session');
             const jwtToken = localStorage.getItem("tmbill-acccess-token");
 
             if (!jwtToken) {
@@ -28,7 +27,7 @@ const Layout = () => {
                 const data = await res.json();
 
                 if (res.ok) {
-                    console.log('Session verified:', data.user);
+                    // console.log('Session verified:', data.user);
                     setUser(data.user);
                     setLoading(false);
                 } else {
